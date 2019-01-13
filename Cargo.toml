@@ -1,0 +1,14 @@
+[package]
+name = "scrun"
+description = "An experiment in writing a text editor for fun and education."
+version = "0.1.0"
+authors = ["Severen Redwood <severen@shrike.me>"]
+license = "MPL-2.0"
+
+edition = "2018"
+
+publish = false
+
+[dependencies]
+ropey = "1.0.0"
+cursive = { version = "0.10.0", default-features = false, features = ["ncurses-backend"] }
