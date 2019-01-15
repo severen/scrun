@@ -73,14 +73,17 @@ impl View for EditorView {
 
             // TODO: Make this a proper modeline.
             printer.print(
-                (0, 50),
+                (0, self.size.y - 2),
+                &format!("Window Size: {}x{}", self.size.x, self.size.y),
+            );
+            printer.print(
+                (0, self.size.y - 1),
                 &format!(
-                    "Pos: {:?}, cursor: {:?}",
+                    "Buffer Position: {} | Cursor Position: {:?}",
                     self.index,
                     (self.cursor.x(), self.cursor.y())
                 ),
             );
-            printer.print((0, 51), &format!("Size: {:?}", self.size));
         });
     }
 
