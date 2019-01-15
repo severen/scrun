@@ -4,7 +4,7 @@
 
 use std::{boxed::Box, error::Error};
 
-use cursive::Cursive;
+use cursive::{Cursive, event::Key};
 
 mod view;
 mod cursor;
@@ -17,6 +17,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let buffer = Buffer::from_file("test/large.txt")?;
     siv.add_fullscreen_layer(EditorView::new(buffer));
+    siv.add_global_callback(Key::End, |c| c.quit());
 
     siv.run();
 
