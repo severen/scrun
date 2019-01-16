@@ -13,3 +13,6 @@ publish = false
 ropey = "1.0.0"
 cursive = { version = "0.10.0", default-features = false, features = ["ncurses-backend"] }
 derive_more = "0.13.0"
+
+[profile.release]
+lto = "thin"
