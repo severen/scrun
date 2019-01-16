@@ -30,7 +30,12 @@ pub struct Buffer {
 }
 
 impl Buffer {
-    /// Create a new buffer from the specified file.
+    /// Create a new `Buffer` instance.
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Create a new `Buffer` instance from the specified file.
     pub fn from_file(path: impl AsRef<Path>) -> io::Result<Self> {
         let text = Rope::from_reader(
             &mut io::BufReader::new(File::open(&path)?)
@@ -41,6 +46,7 @@ impl Buffer {
             // In theory this should never raise an error, as its error
             // conditions are already covered when opening the file.
             path: Some(fs::canonicalize(path)?),
+            ..Self::default()
         })
     }
 
@@ -103,5 +109,15 @@ impl Buffer {
     pub fn remove(&mut self, start: usize, end: usize) {
         self.text.remove(start..end);
         self.dirty = true;
+    }
+}
+
+impl Default for Buffer {
+    fn default() -> Self {
+        Self {
+            text: Rope::new(),
+            path: None,
+            dirty: false,
+        }
     }
 }
