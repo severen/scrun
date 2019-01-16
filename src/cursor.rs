@@ -9,7 +9,8 @@ use crate::buffer::Buffer;
 /// The cursor on the screen.
 #[derive(Debug)]
 pub struct Cursor {
-    position: Vec2,
+    x: usize,
+    y: usize,
 }
 
 impl Cursor {
@@ -19,54 +20,54 @@ impl Cursor {
     }
 
     /// Create a new `Cursor` instance at the specified position.
-    pub fn at(position: impl Into<Vec2>) -> Self {
-        Self { position: position.into() }
+    pub fn at(x: usize, y: usize) -> Self {
+        Self { x, y }
     }
 
     /// Get the current cursor position on the x-axis, or in other words, the
     /// cursor's current column.
     pub fn x(&self) -> usize {
-        self.position.x
+        self.x
     }
 
     /// Get the current cursor position on the y-axis, or in other words, the
     /// cursor's current row.
     pub fn y(&self) -> usize {
-        self.position.y
+        self.y
     }
 
     /// Move the cursor up by one row.
     pub fn up(&mut self) {
         // Going above the first line makes no sense and probably would cause a
         // panic.
-        if self.position.y != 0 {
-            self.position.y -= 1;
+        if self.y != 0 {
+            self.y -= 1;
         }
     }
 
     /// Move the cursor down by one row.
     pub fn down(&mut self) {
         // TODO: Prevent movement past the last line of the buffer.
-        self.position.y += 1;
+        self.y += 1;
     }
 
     /// Move the cursor left by one column.
     pub fn left(&mut self) {
         // We follow Vim's behaviour of preventing movement past the start of
         // the line instead of wrapping around to the end of the line above.
-        if self.position.x != 0 {
-            self.position.x -= 1;
+        if self.x != 0 {
+            self.x -= 1;
         }
     }
 
     /// Move the cursor right by one column.
     pub fn right(&mut self) {
-        self.position.x += 1;
+        self.x += 1;
     }
 
     /// Get the current index in the provided buffer at the cursor position.
     pub fn index(&self, buffer: &Buffer) -> usize {
-        buffer.line_to_char(self.position.y) + self.position.x
+        buffer.line_to_char(self.y) + self.x
     }
 
     /// Get the character in the provided buffer at the cursor position.
@@ -89,14 +90,12 @@ impl Cursor {
 
 impl Default for Cursor {
     fn default() -> Self {
-        Self {
-            position: Vec2::new(0, 0),
-        }
+        Self { x: 0, y: 0 }
     }
 }
 
 impl From<&Cursor> for Vec2 {
     fn from(cursor: &Cursor) -> Self {
-        cursor.position
+        Vec2::new(cursor.x, cursor.y)
     }
 }
