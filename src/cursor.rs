@@ -98,6 +98,6 @@ impl Default for Cursor {
 
 impl From<&Cursor> for Vec2 {
     fn from(cursor: &Cursor) -> Self {
-        Vec2::new(cursor.x, cursor.y)
+        Self::new(cursor.x, cursor.y)
     }
 }
