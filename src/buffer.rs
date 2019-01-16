@@ -31,7 +31,7 @@ pub struct Buffer {
 
 impl Buffer {
     /// Create a new buffer from the specified file.
-    pub fn from_file(path: &str) -> io::Result<Self> {
+    pub fn from_file(path: impl AsRef<Path>) -> io::Result<Self> {
         let text = Rope::from_reader(
             &mut io::BufReader::new(File::open(&path)?)
         )?;
@@ -39,7 +39,7 @@ impl Buffer {
         Ok(Self {
             text,
             // TODO: Replace this call to unwrap with real error handling.
-            path: Some(fs::canonicalize(PathBuf::from(path)).unwrap()),
+            path: Some(fs::canonicalize(path).unwrap()),
             dirty: false,
         })
     }
