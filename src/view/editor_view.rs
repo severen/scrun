@@ -79,9 +79,9 @@ impl View for EditorView {
             printer.print(
                 (0, self.size.y - 1),
                 &format!(
-                    "Buffer Position: {} | Cursor Position: {:?}",
+                    "Buffer Position: {} | Cursor Position: {}",
                     self.index,
-                    (self.cursor.x(), self.cursor.y())
+                    self.cursor,
                 ),
             );
         });

@@ -3,11 +3,13 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 use cursive::Vec2;
+use derive_more::Display;
 
 use crate::buffer::Buffer;
 
 /// The cursor on the screen.
-#[derive(Debug)]
+#[derive(Display, Debug)]
+#[display(fmt = "({}, {})", x, y)]
 pub struct Cursor {
     x: usize,
     y: usize,
