@@ -38,9 +38,9 @@ impl Buffer {
 
         Ok(Self {
             text,
-            // TODO: Replace this call to unwrap with real error handling.
-            path: Some(fs::canonicalize(path).unwrap()),
-            dirty: false,
+            // In theory this should never raise an error, as its error
+            // conditions are already covered when opening the file.
+            path: Some(fs::canonicalize(path)?),
         })
     }
 
