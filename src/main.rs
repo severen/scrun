@@ -2,6 +2,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+#![deny(bare_trait_objects, elided_lifetimes_in_paths)]
+#![warn(
+    trivial_casts,
+    trivial_numeric_casts,
+    unreachable_pub,
+    unused_import_braces,
+    unused_qualifications,
+)]
+
 use std::{boxed::Box, error::Error};
 
 use clap::{

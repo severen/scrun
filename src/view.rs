@@ -4,4 +4,4 @@
 
 mod editor_view;
 
-pub use self::editor_view::EditorView;
+pub(crate) use self::editor_view::EditorView;

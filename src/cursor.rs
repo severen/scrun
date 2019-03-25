@@ -72,6 +72,7 @@ impl Cursor {
         buffer.line_to_char(self.y) + self.x
     }
 
+    // TODO: Make this a function on buffer instead.
     /// Get the character in the provided buffer at the cursor position.
     pub fn char(&self, buffer: &Buffer) -> char {
         // TODO: Figure out how to remove this extra index call.
@@ -83,10 +84,10 @@ impl Cursor {
     /// Check if the cursor is past the end of the current line in the provided
     /// buffer.
     pub fn is_past_end(&self, buffer: &Buffer) -> bool {
-        let current_line = buffer.get_line(self.position.y);
+        let current_line = buffer.get_line(self.y);
         // We check against the length of the line minus 1 in order to not
         // count the newline character.
-        self.position.x == current_line.len_chars() - 1
+        self.x == current_line.len_chars() - 1
     }
 }
 

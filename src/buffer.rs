@@ -25,8 +25,8 @@ pub struct Buffer {
     /// neccessarily has a file associated with it (e.g. temporary buffers, new
     /// unsaved buffers).
     path: Option<PathBuf>,
-    /// The edit state of the buffer.
-    dirty: bool,
+    /// The modification state.
+    modified: bool,
 }
 
 impl Buffer {
@@ -59,12 +59,12 @@ impl Buffer {
     }
 
     /// Create an iterator over the characters in the buffer.
-    pub fn chars(&self) -> Chars {
+    pub fn chars(&self) -> Chars<'_> {
         self.text.chars()
     }
 
     /// Create an iterator over the lines in the buffer.
-    pub fn lines(&self) -> Lines {
+    pub fn lines(&self) -> Lines<'_> {
         self.text.lines()
     }
 
@@ -84,7 +84,7 @@ impl Buffer {
     }
 
     /// Get the line at the specified line index.
-    pub fn get_line(&self, line_index: usize) -> RopeSlice {
+    pub fn get_line(&self, line_index: usize) -> RopeSlice<'_> {
         self.text.line(line_index)
     }
 
@@ -96,19 +96,19 @@ impl Buffer {
     /// Insert some text after the given index.
     pub fn insert(&mut self, index: usize, text: &str) {
         self.text.insert(index, text);
-        self.dirty = true;
+        self.modified = true;
     }
 
     /// Insert a character after the given index.
     pub fn insert_char(&mut self, index: usize, chr: char) {
         self.text.insert_char(index, chr);
-        self.dirty = true;
+        self.modified = true;
     }
 
     /// Delete text in the specified region.
     pub fn remove(&mut self, start: usize, end: usize) {
         self.text.remove(start..end);
-        self.dirty = true;
+        self.modified = true;
     }
 }
 
@@ -117,7 +117,7 @@ impl Default for Buffer {
         Self {
             text: Rope::new(),
             path: None,
-            dirty: false,
+            modified: false,
         }
     }
 }

@@ -13,7 +13,7 @@ use cursive::{
 use crate::{cursor::Cursor, buffer::Buffer};
 
 /// A text editor view.
-pub struct EditorView {
+pub(crate) struct EditorView {
     /// The buffer containing the text.
     buffer: Buffer,
     /// The position in the buffer as a character index.
@@ -26,7 +26,7 @@ pub struct EditorView {
 
 impl EditorView {
     /// Create a new `EditorView` instance from the specified buffer.
-    pub fn new(buffer: Buffer) -> Self {
+    pub(crate) fn new(buffer: Buffer) -> Self {
         Self {
             buffer,
             index: 0,
@@ -36,7 +36,7 @@ impl EditorView {
     }
 
     /// Insert the character into the buffer after the current cursor location.
-    pub fn insert(&mut self, chr: char) {
+    pub(crate) fn insert(&mut self, chr: char) {
         self.buffer.insert_char(self.index, chr);
         // Update our cursor position.
         self.cursor.right();
@@ -44,7 +44,7 @@ impl EditorView {
 
     /// Remove the specified amount of characters after the current cursor
     /// location.
-    pub fn remove(&mut self, count: usize) {
+    pub(crate) fn remove(&mut self, count: usize) {
         if self.index != 0 {
             self.buffer.remove(self.index - count, self.index);
         }
@@ -54,7 +54,7 @@ impl EditorView {
 }
 
 impl View for EditorView {
-    fn draw(&self, printer: &Printer) {
+    fn draw(&self, printer: &Printer<'_, '_>) {
         // TODO: Fill in empty space with a filler character.
         for (line_number, line) in self.buffer.lines().enumerate() {
             // Don't render more than we need to.
@@ -68,7 +68,7 @@ impl View for EditorView {
             // Print the cursor to the screen.
             printer.print(
                 &self.cursor,
-                &self.cursor.char(&self.buffer).to_string()
+                &self.cursor.char(&self.buffer).to_string(),
             );
 
             // TODO: Make this a proper modeline.
