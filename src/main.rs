@@ -11,17 +11,10 @@
     unused_qualifications,
 )]
 
-use std::{boxed::Box, error::Error};
+use std::{path::PathBuf, boxed::Box, error::Error};
 
-use clap::{
-    App,
-    Arg,
-    crate_name,
-    crate_description,
-    crate_version,
-    crate_authors,
-};
-use cursive::{Cursive, event::Key};
+use clap::Parser;
+use cursive::{Cursive, CursiveExt, event::Key};
 
 mod view;
 mod cursor;
@@ -29,16 +22,17 @@ mod buffer;
 
 use crate::{buffer::Buffer, view::EditorView};
 
-fn main() -> Result<(), Box<dyn Error>> {
-    let matches = App::new(crate_name!())
-        .about(crate_description!())
-        .version(crate_version!())
-        .author(crate_authors!())
-        .arg(Arg::with_name("FILE").help("A file to open for editing").index(1))
-        .get_matches();
+#[derive(Parser, Debug)]
+#[command(author, version, about)]
+struct Args {
+    #[arg(name = "FILE", help = "A path to a file to open.")]
+    file_path: Option<PathBuf>,
+}
 
-    let buffer = match matches.value_of("FILE") {
-        Some(file) => Buffer::from_file(file)?,
+fn main() -> Result<(), Box<dyn Error>> {
+    let args = Args::parse();
+    let buffer = match args.file_path {
+        Some(path) => Buffer::from_file(path)?,
         None => Buffer::new(),
     };
 

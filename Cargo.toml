@@ -10,10 +10,10 @@ edition = "2018"
 publish = false
 
 [dependencies]
-ropey = "1.0.0"
-cursive = { version = "0.10.0", default-features = false, features = ["ncurses-backend"] }
-derive_more = "0.13.0"
-clap = "2.32.0"
+clap = { version = "4.0.18", features = ["derive", "unicode", "wrap_help"] }
+cursive = { version = "0.20.0", default-features = false, features = ["ncurses-backend"] }
+derive_more = "0.99.17"
+ropey = "1.5.0"
 
 [profile.release]
 lto = "thin"
